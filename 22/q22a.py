@@ -66,6 +66,7 @@ for i, b in enumerate(bricks):
             other.supported_by.add(b)
 
 removable = {b for b in bricks if b.removable()}
+print(len(removable))  # part 1
 
 total = 0
 for brick in bricks:
@@ -77,5 +78,4 @@ for brick in bricks:
             falling.add(b)
     total += len(falling)
 
-print(total)
-
+print(total)  # part 2
