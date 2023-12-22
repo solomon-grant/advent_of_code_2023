@@ -1,6 +1,3 @@
-import itertools
-
-
 def decode(colour):
     # colour looks like (#XXXXXX)
     n = int(colour[2:7], 16)
@@ -14,35 +11,38 @@ def decode(colour):
     return d, n
 
 
-with open("example.txt") as fp:
+right_turns = ("UR", "RD", "DL", "LU")
+
+with open("input.txt") as fp:
     lines = fp.readlines()
 
 
-min_height =
-total = 0
+min_height = 0
+max_height = 0
+height = 0
+prev_d, _ = decode(lines[-1].strip().split()[2])
+horizontals = []
 for i, line in enumerate(lines):
-    x, y = curr
     d, n = decode(line.strip().split()[2])
-
+    next_d, _ = decode(lines[(i+1) % len(lines)].strip().split()[2])
+    turn_in = prev_d + d
+    turn_out = d + next_d
+    # d, n, _ = line.strip().split()
+    n = int(n)
+    if turn_in in right_turns and turn_out in right_turns:
+        n += 1
+    if turn_in not in right_turns and turn_out not in right_turns:
+        n -= 1
     if d == "L":
-        x -= n
+        horizontals.append((-n, height))
     if d == "R":
-        horizontals.add(y)
-        x += n
+        horizontals.append((n, height))
     if d == "U":
-        v_segments.append((x, y, y+n))
-        y += n
+        height += n
     if d == "D":
-        v_segments.append((x, y-n, y))
-        y -= n
-    curr = (x, y)
+        height -= n
+        min_height = min(min_height, height)
+    prev_d = d
 
-for bot, top in itertools.pairwise(horizontals):
-    verticals = [v for v in v_segments if v[1] <= bot < v[2]]
-    for v1, v2 in itertools.pairwise(verticals):
-        left = v1[0]
-        right = v2[0]
-        total += (top - bot) * (right - left)
-        print("bot:", bot, "top:", top, "left:", left, "right:", right)
-
+total = sum(w * (h - min_height) for w, h in horizontals)
 print(total)
