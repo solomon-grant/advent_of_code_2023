@@ -1,4 +1,4 @@
-with open("example.txt") as fp:
+with open("input.txt") as fp:
     grid = [line.strip() for line in fp.readlines()]
 width = len(grid[0])
 height = len(grid)
@@ -32,9 +32,6 @@ up = Coord(-1, 0)
 down = Coord(1, 0)
 left = Coord(0, -1)
 right = Coord(0, 1)
-
-with open("example.txt") as fp:
-    grid = [line.strip() for line in fp.readlines()]
 start = Coord(0, grid[0].find("."))
 end = Coord(len(grid) - 1, grid[-1].find("."))
 
